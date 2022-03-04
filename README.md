@@ -90,3 +90,10 @@ Install [Postgres](https://www.postgresql.org/download/) on your computer, takin
 The following demo explains how to set up a project using PostgreSQL and Heroku.
 
 [![Setting up PostgreSQL for Build Week](https://tk-assets.lambdaschool.com/e43c6d1e-5ae8-4142-937b-b865d71925fb_unit-4-build-week-project-scaffolding.png)](https://bloomtech-1.wistia.com/medias/2625bl7sei)
+
+
+
+
+```
+https://www.notion.so/fd799a0f32814ad5ac4842b5d59c489e?v=181a02d14d4548bb9f051275841a9cfa
+```
