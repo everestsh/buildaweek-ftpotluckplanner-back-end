@@ -4,6 +4,7 @@ const { restricted, checkRole } = require('../auth/auth-middleware')
 
 
 // TEST: http get  :9000/api/users
+// TEST: http get  :9000/api/users Authorization:$2a$08$XK9X037FTUnGio/db/WeGef6pFO/FRFAhs9DUOmzlGal0/LssjJ4u
 router.get('/', 
 restricted,
 checkRole('admin'),

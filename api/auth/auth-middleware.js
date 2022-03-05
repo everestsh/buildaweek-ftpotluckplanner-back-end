@@ -1,16 +1,45 @@
+const User = require('../users/users-model');
+const jwt = require('jsonwebtoken');
+const { JWT_SECRET } = require("../secrets");
 
-const restricted = (req, res, next) => {!
-    console.log("restricted middleware")
-    next()
+const restricted = (req, res, next) => {
+    // console.log("restricted middleware")
+    // next()
+    const token = req.headers.authorization
+    if(!token){
+      next({ status: 401, message:  "Token required"});
+    }else{
+      jwt.verify(token, JWT_SECRET, (err, decodedToken)=>{
+        if(err){
+          next({ status: 401, message:  "Token invalid" }); 
+        }else{
+          req.decodedJwt = decodedToken
+          next()
+        }
+      })
+    }
 }
 const checkRole = role =>  (req, res, next) => {
     console.log("checkRole middleware")
     next()
 }
 
-const checkUsernameExists = (req, res, next) => {!
-    console.log("checkUsernameExists middleware")
-    next()
+const checkUsernameExists = async (req, res, next) => {
+    // console.log("checkUsernameExists middleware")
+    // next()
+    try{
+        // console.log(req.body.username)
+        const existUser = await User.findBy({username: req.body.username})
+        console.log(existUser)
+        if(existUser){
+          req.user = existUser
+          next()
+        }else{
+          next({"message": "Invalid credentials", status: 401})
+        }
+      }catch(err){
+        next(err)
+      }
 }
 
 const validateRoleName = (req, res, next) => {
