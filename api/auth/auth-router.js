@@ -3,19 +3,23 @@ const User = require('../users/users-model');
 const bcrypt = require("bcryptjs");
 const { JWT_SECRET, BCRYPT_ROUNDS } = require("../secrets");
 const makeToken = require('./auth-token-builder')
-const { checkUsernameExists, validateRoleName } = require('./auth-middleware');
+const { checkUsernameExists, validateRoleName, checkAccountNameUnique } = require('./auth-middleware');
 
 // TEST: http post :9000/api/auth/register username=foo password=1234
 // TEST: http post :9000/api/auth/register username=faa password=1234 role_id:=1
 router.post('/register', 
-// validateRoleName, 
+validateRoleName, 
+checkAccountNameUnique,
 async (req, res, next)=>{
     try{
         // res.status(201).json({message: `Great to have, `})
-        const { username, password, role_id } = req.body
+        // let user = req.body
+        // const { username, password, role_id } = req.body
+        const { username, password, role_type } = req.body
         // const {role_name} = req
         const hash = bcrypt.hashSync(password, BCRYPT_ROUNDS)
-        const newUser = await User.add({username, password: hash, role_id})
+        // const newUser = await User.add({username, password: hash, role_id})
+        const newUser = await User.add({username, password: hash, role_type})
         res.status(201).json(newUser)
     }catch(err){
         next(err)

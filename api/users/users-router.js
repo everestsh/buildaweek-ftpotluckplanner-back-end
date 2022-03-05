@@ -17,7 +17,9 @@ async (req, res, next) => {
         .catch(next)
 })
 
-router.get("/:id", restricted, (req, res, next) => {
+router.get("/:id", 
+// restricted, 
+(req, res, next) => {
     User.findById(req.params.id)
     .then(users => {
       res.json(users)
