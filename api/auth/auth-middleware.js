@@ -1,6 +1,7 @@
 const User = require('../users/users-model');
 const jwt = require('jsonwebtoken');
 const { JWT_SECRET } = require("../secrets");
+const db = require("../data/db-config");
 
 const restricted = (req, res, next) => {
     // console.log("restricted middleware")
@@ -55,11 +56,26 @@ const validateRoleName = (req, res, next) => {
         next()
       }
 }
+const checkAccountNameUnique = async (req, res, next) => {
+    // console.log('checkAccountNameUnique middleware')
+    // next()
+    try{
+      const existing = await db('users').where('username', req.body.username.trim()).first()
+      if(existing){
+        next({status:400, message: "that username is taken"})
+      }else{
+        next()
+      }
+    }catch(err){
+      next(err)
+    }
+  }
 
 module.exports = {
     restricted,
     checkRole,
     checkUsernameExists,
     validateRoleName,
+    checkAccountNameUnique,
   }
   
